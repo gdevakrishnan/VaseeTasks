@@ -1,11 +1,13 @@
 import React from 'react'
+import Button from '@mui/material/Button';
 import './index.css'
+import { Fragment } from 'react';
 
 function App() {
   return (
-    <div>   
-      <h1>VaseeTasks</h1>
-    </div>
+    <Fragment>
+      <Button variant="contained">Hello world</Button>
+    </Fragment>
   )
 }
 
