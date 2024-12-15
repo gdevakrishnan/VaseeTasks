@@ -21,6 +21,4 @@ mongoose.connect(MONGO_URI)
     .catch((e) => console.log(e.message));
 
 // Routers Middleware
-app.use('/api/users', userRouters);
-
-// Deployed Link: https://post-seva-server.onrender.com
+app.use('/api', userRouters);
