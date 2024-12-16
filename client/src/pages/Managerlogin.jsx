@@ -1,9 +1,10 @@
 import React, { useState, Fragment } from 'react';
 import "../static/userlogin.css";
+import { managerLogin } from '../services/serviceWorker';
 
 function Managerlogin() {
   const [formData, setFormData] = useState({
-    name: '',
+    username: '',
     password: '',
     company_id: ''
   });
@@ -18,8 +19,24 @@ function Managerlogin() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Submitted Data:', formData);
+    for (const field in formData) {
+      if (!formData[field] || formData[field].trim() === "") {
+        alert(`Please fill in the ${field} field.`);
+        return;
+      }
+    }
+    managerLogin(formData)
+      .then((response) => {
+        console.log(response);
+        alert(response.data.message);
+        localStorage.setItem("vaseetasks-token", response.data.token);
+      })
+      .catch((e) => {
+        console.log(e.message)
+      }
+      );
   };
+
 
   return (
     <Fragment>
@@ -30,20 +47,9 @@ function Managerlogin() {
               <label htmlFor="name">Name</label>
               <input
                 type="text"
-                id="name"
-                name="name"
+                id="username"
+                name="username"
                 value={formData.name}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="input-group">
-              <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={formData.password}
                 onChange={handleChange}
                 required
               />
@@ -55,6 +61,17 @@ function Managerlogin() {
                 id="company_id"
                 name="company_id"
                 value={formData.company_id}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="input-group">
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                value={formData.password}
                 onChange={handleChange}
                 required
               />

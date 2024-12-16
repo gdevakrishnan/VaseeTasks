@@ -247,6 +247,13 @@ const loginWorker = async (req, res) => {
         // Send response with token and success message
         res.status(200).json({
             message: "Worker logged in successfully",
+            worker: {
+                id: worker._id,
+                name: worker.name,
+                email: worker.email,
+                company_id: worker.company_id,
+                role: worker.role,
+            },
             token,
         });
     } catch (err) {

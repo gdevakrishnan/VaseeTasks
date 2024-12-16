@@ -1,5 +1,6 @@
 import React, { useState, Fragment } from 'react';
 import "../static/userlogin.css";
+import { workerLogin } from '../services/serviceWorker';
 
 function UserLogin() {
   const [formData, setFormData] = useState({
@@ -19,7 +20,24 @@ function UserLogin() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Submitted Data:', formData);
+    console.log(formData);
+    
+    for (const field in formData) {
+      if (!formData[field] || formData[field].trim() === "") {
+        alert(`Please fill in the ${field} field.`);
+        return;
+      }
+    }
+    workerLogin(formData)
+      .then((response) => {
+        console.log(response);
+        alert(response.data.message);
+        localStorage.setItem("vaseetasks-token", response.data.token);
+      })
+      .catch((e) => {
+        console.log(e.message)
+      }
+      );
   };
 
   return (
